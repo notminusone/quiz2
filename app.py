@@ -39,7 +39,7 @@ def part10():
 		row = cursor.fetchval()
 		data.append(int(row))
 	
-	return render_template('part10.html',part10_active="active",title="Part 10",data=data)
+	return render_template('part10.html',part10_active="active",title="Part 10",data=data,frults=frults)
 	
 
 @app.route('/part11',methods=['GET','POST'])
