@@ -1,11 +1,33 @@
 {% extends "base.html" %}
+<script src="http://d3js.org/d3.v7.min.js" charset="uft-8"></script>
+<script type="text/javascript">
+    var width = 300;  //画布的宽度
+    var height = 300;   //画布的高度
 
+    var svg = d3.select("body")     //选择文档中的body元素
+        .append("svg")          //添加一个svg元素
+        .attr("width", width)       //设定宽度
+        .attr("height", height);    //设定高度
+    var dataset = [ 250 , 210 , 170 , 130 , 90 ];  //数据（表示矩形的宽度
+svg.selectAll("rect")
+    .data(dataset)
+    .enter()
+    .append("rect")
+    .attr("x",20)
+    .attr("y",function(d,i){
+         return i * rectHeight;
+    })
+    .attr("width",function(d){
+         return d;
+    })
+    .attr("height",rectHeight-2)
+    .attr("fill","steelblue");
+
+</script>
 {% block app_content %}
 <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-    <h4>The sum of quake :{{sum}}</h4>
-    <br/>
-    <h4>The id of maximum is {{max.id}}, The location is {{max.location}}</h4>
-    <br/>
-    <h4>The id of minimum is {{min.id}}, The location is {{min.location}}</h4>
+    <svg>
+
+    </svg>
 </div>
 {% endblock %}
