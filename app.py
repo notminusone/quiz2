@@ -31,6 +31,7 @@ driver= '{ODBC Driver 17 for SQL Server}'
 @app.route('/')
 def part10():
 	data = []
+	data2 = []
 	frults = ['apple','pear','berry','grape','kiwi','banana']
 	cnxn = pyodbc.connect('Driver={ODBC Driver 17 for SQL Server};Server=tcp:notminusone.database.windows.net,1433;Database=notminusoneDatabase;Uid=not-1;Pwd={0626Fuyi};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;')
 	cursor = cnxn.cursor()
@@ -39,7 +40,12 @@ def part10():
 		row = cursor.fetchval()
 		data.append(int(row))
 	
-	return render_template('part10.html',part10_active="active",title="Part 10",data=data,frults=frults)
+	for i in range(1,9):
+		cursor.execute("select sum(num) from f where store=?",i)
+		row = cursor.fetchval()
+		data2.append(int(row))
+		
+	return render_template('part10.html',part10_active="active",title="Part 10",data=data,frults=frults,data2=data2)
 	
 
 @app.route('/part11',methods=['GET','POST'])
