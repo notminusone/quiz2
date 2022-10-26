@@ -40,7 +40,7 @@ def part10():
 			low=high
 			high=a
 		if low>0 and high>0:
-			cnxn = pyodbc.connect('Driver={ODBC Driver 18 for SQL Server};Server=tcp:hpspdb.database.windows.net,1433;Database=sampdb;Uid=hp;Pwd={Cf123456};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;')
+			cnxn = pyodbc.connect('Driver={ODBC Driver 17 for SQL Server};Server=tcp:notminusone.database.windows.net,1433;Database=notminusoneDatabase;Uid=not-1;Pwd={0626Fuyi};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;')
 			cursor = cnxn.cursor()
 			cursor.execute("select sum(num),food from f where store>=? and store<=? group by food",low,high)
 			a = cursor.fetchall()
@@ -70,7 +70,7 @@ def part11():
 			low=high
 			high=a
 		if low>0 and high>0:
-			cnxn = pyodbc.connect('Driver={ODBC Driver 18 for SQL Server};Server=tcp:hpspdb.database.windows.net,1433;Database=sampdb;Uid=hp;Pwd={Cf123456};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;')
+			cnxn = pyodbc.connect('Driver={ODBC Driver 17 for SQL Server};Server=tcp:notminusone.database.windows.net,1433;Database=notminusoneDatabase;Uid=not-1;Pwd={0626Fuyi};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;')
 			cursor = cnxn.cursor()
 			cursor.execute("select sum(num),store from f where store>=? and store<=? group by store ",low,high)
 			a = cursor.fetchall()
@@ -100,7 +100,7 @@ def part12():
 			low=high
 			high=a
 		if low>0 and high>0:
-			cnxn = pyodbc.connect('Driver={ODBC Driver 18 for SQL Server};Server=tcp:hpspdb.database.windows.net,1433;Database=sampdb;Uid=hp;Pwd={Cf123456};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;')
+			cnxn = pyodbc.connect('Driver={ODBC Driver 17 for SQL Server};Server=tcp:notminusone.database.windows.net,1433;Database=notminusoneDatabase;Uid=not-1;Pwd={0626Fuyi};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;')
 			cursor = cnxn.cursor()
 			cursor.execute("select sum(num),store from f where store>=? and store<=? group by store ",low,high)
 			a = cursor.fetchall()
@@ -147,7 +147,7 @@ def part14():
 @app.route('/part13',methods=['GET','POST'])
 def part13():
 	if request.method=='GET':
-		cnxn = pyodbc.connect('Driver={ODBC Driver 18 for SQL Server};Server=tcp:hpspdb.database.windows.net,1433;Database=sampdb;Uid=hp;Pwd={Cf123456};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;')
+		cnxn = pyodbc.connect('Driver={ODBC Driver 17 for SQL Server};Server=tcp:notminusone.database.windows.net,1433;Database=notminusoneDatabase;Uid=not-1;Pwd={0626Fuyi};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;')
 		cursor = cnxn.cursor()
 		cursor.execute("select x,y,color from p where color='r'")
 		a = cursor.fetchall()
