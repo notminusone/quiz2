@@ -36,7 +36,7 @@ def part10():
 	cursor = cnxn.cursor()
 	for frult in frults:
 		cursor.execute("select sum(num) from f where food=?",frult)
-		row = cursor.fetchone()
+		row = cursor.fetchval()
 		data.append(int(row))
 	
 	return render_template('part10.html',part10_active="active",title="Part 10",data=data)
@@ -50,7 +50,7 @@ def part11():
 	cursor = cnxn.cursor()
 	for frult in frults:
 		cursor.execute("select sum(num) from f where food=?",frult)
-		row = cursor.fetchone()
+		row = cursor.fetchval()
 		data.append(int(row))
 	
 	return render_template('part11.html',part11_active="active",title="Part 11",data=data,frults=frults)
