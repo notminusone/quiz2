@@ -4,17 +4,17 @@
 {% block app_content %}
 <script src="http://d3js.org/d3.v7.min.js" charset="uft-8"></script>
 <div  id="view010702" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-    <svg width="1000" height="500">
+    <svg width="1000" height="400">
         {% if data%}
         <!-- {% if frults %} -->
         {% for i in range(6) %}
         <!-- <h3>{{frults[i]}}</h3> -->
-        <rect x={{i*60}} y={{500-data[i]*20}} height={{data[i]*20}}  width="50 " fill="blue" ></rect>
+        <rect x={{i*60}} y={{400-data[i]*20}} height={{data[i]*20}}  width="50 " fill="blue" ></rect>
         {% endfor %}
         {% endif %}
         <!-- {% endif %} -->
     </svg>
-    <svg width="1000">
+    <svg width="1000" height="600">
         {% if data2 %}
         {% for i in range(8) %}
         <!-- <h3>store{{i+1}}</h3> -->
