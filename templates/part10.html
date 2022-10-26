@@ -4,29 +4,38 @@
 {% block app_content %}
 <script src="http://d3js.org/d3.v7.min.js" charset="uft-8"></script>
 <div  id="view010702" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-    
+    <svg>
+        {% if data%}
+        {% if frults %}
+        {% for i in range(6) %}
+        <h3>{{frults[i]}}</h3>
+        <rect x="0" y={{i*30}} height="25" fill=""  width={{data[i]*20}} fill="blue" ></rect>
+        {% endfor %}
+        {% endif %}
+        {% endif %}
+    </svg>
 </div>
 <script type="text/javascript">
-    data = [120, 140, 150, 180]  // define width is array
-    svg = d3.select('#view010702')
-        .append('svg');
-    chart = svg.selectAll('rect')
-        .data(data).enter()
-        .append('rect')
-        .attr('x', 0)
-        .attr('y', function(d,i) {return i * 30})
-        .attr('width', function(d) {return d})
-        .attr('height', 25)
+    // data = [120, 140, 150, 180]  // define width is array
+    // svg = d3.select('#view010702')
+    //     .append('svg');
+    // chart = svg.selectAll('rect')
+    //     .data(data).enter()
+    //     .append('rect')
+    //     .attr('x', 0)
+    //     .attr('y', function(d,i) {return i * 30})
+    //     .attr('width', function(d) {return d})
+    //     .attr('height', 25)
 
-    // After creating basic barchart
-    svg.selectAll("text")
-        .data(data)
-        .enter()
-        .append("text")
-        .text(function(d) {return d})
-        .attr("y", function(d,i) {return i*30 + 20})
-        .attr("x", function(d) {return d})
-        .attr("fill","steelblue")
+    // // After creating basic barchart
+    // svg.selectAll("text")
+    //     .data(data)
+    //     .enter()
+    //     .append("text")
+    //     .text(function(d) {return d})
+    //     .attr("y", function(d,i) {return i*30 + 20})
+    //     .attr("x", function(d) {return d})
+    //     .attr("fill","steelblue")
 
 
 </script>
