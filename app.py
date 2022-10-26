@@ -34,16 +34,13 @@ def part10():
 	cursor = cnxn.cursor()
 	cursor.execute("select count(*) from [dbo].[nquakes2]")
 	row = cursor.fetchval()
-	cursor.execute("select id,place from [dbo].[nquakes2] where mag=(select max(mag) from [dbo].[nquakes2])")
-	row1 = cursor.fetchone()
-	cursor.execute("select id,place from [dbo].[nquakes2] where mag=(select min(mag) from [dbo].[nquakes2])")
-	row2 = cursor.fetchone()
-	return render_template('part10.html',sum=row,part10_active="active",title="Part 10",max={
-		'id':row1[0],
-		'location':row1[1]
-	},min={
-		'id':row2[0],
-		'location':row2[1]
+	
+	return render_template('part10.html',part10_active="active",title="Part 10",data={
+		'berry':8,
+		'pear':2,
+		'grape':6,
+		'kiwi':3,
+		'apple':1
 	})
 	
 

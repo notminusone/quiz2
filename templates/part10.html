@@ -1,5 +1,13 @@
 {% extends "base.html" %}
+
+
+{% block app_content %}
 <script src="http://d3js.org/d3.v7.min.js" charset="uft-8"></script>
+<div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <svg>
+
+    </svg>
+</div>
 <script type="text/javascript">
     var width = 300;  //画布的宽度
     var height = 300;   //画布的高度
@@ -24,10 +32,4 @@ svg.selectAll("rect")
     .attr("fill","steelblue");
 
 </script>
-{% block app_content %}
-<div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-    <svg>
-
-    </svg>
-</div>
 {% endblock %}
