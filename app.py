@@ -45,15 +45,14 @@ def part10():
 @app.route('/part11',methods=['GET','POST'])
 def part11():
 	data = []
-	frults = ['apple','pear','berry','grape','kiwi','banana']
 	cnxn = pyodbc.connect('Driver={ODBC Driver 17 for SQL Server};Server=tcp:notminusone.database.windows.net,1433;Database=notminusoneDatabase;Uid=not-1;Pwd={0626Fuyi};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;')
 	cursor = cnxn.cursor()
-	for frult in frults:
-		cursor.execute("select sum(num) from f where food=?",frult)
+	for i in range(1,9):
+		cursor.execute("select sum(num) from f where store=?",i)
 		row = cursor.fetchval()
 		data.append(int(row))
 	
-	return render_template('part11.html',part11_active="active",title="Part 11",data=data,frults=frults)
+	return render_template('part11.html',part11_active="active",title="Part 11",data=data)
 	# if request.method=='GET':
 	# 	return render_template('part11.html',part11_active = "active",title="Part 11")
 	# if request.method=='POST':
