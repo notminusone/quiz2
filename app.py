@@ -30,48 +30,56 @@ driver= '{ODBC Driver 17 for SQL Server}'
 
 @app.route('/')
 def part10():
+	data = []
+	frults = ['apple','pear','berry','grape','kiwi','banana']
 	cnxn = pyodbc.connect('Driver={ODBC Driver 17 for SQL Server};Server=tcp:notminusone.database.windows.net,1433;Database=notminusoneDatabase;Uid=not-1;Pwd={0626Fuyi};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;')
 	cursor = cnxn.cursor()
-	cursor.execute("select count(*) from [dbo].[nquakes2]")
-	row = cursor.fetchval()
+	for frult in frults:
+		cursor.execute("select sum(num) from f where food=?",frult)
+		row = cursor.fetchone()
+		data.append(int(row))
 	
-	return render_template('part10.html',part10_active="active",title="Part 10",data={
-		'berry':8,
-		'pear':2,
-		'grape':6,
-		'kiwi':3,
-		'apple':1
-	})
+	return render_template('part10.html',part10_active="active",title="Part 10",data=data)
 	
 
 @app.route('/part11',methods=['GET','POST'])
 def part11():
-	if request.method=='GET':
-		return render_template('part11.html',part11_active = "active",title="Part 11")
-	if request.method=='POST':
-		low = float(request.form["low"])
-		high = float(request.form["high"])
-		N = int(request.form["N"])
-		cnxn = pyodbc.connect('Driver={ODBC Driver 17 for SQL Server};Server=tcp:notminusone.database.windows.net,1433;Database=notminusoneDatabase;Uid=not-1;Pwd={0626Fuyi};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;')
-		cursor = cnxn.cursor()
-		data = []
-		step = (high-low)/N
-		for i in range(N):
-			cursor.execute("select count(*) from nquakes2 where mag>"+str(low + step * i)+ "and mag<"+ str(low + step * (i + 1)))
-			num = cursor.fetchval()
-			cursor.execute("select max(mag) from nquakes2 where mag>"+str(low + step * i)+ "and mag<"+ str(low + step * (i + 1)))
-			max = cursor.fetchval()
-			cursor.execute("select time,place from nquakes2 where mag=?",max)
-			row = cursor.fetchone()
-			data.append({
-				"num":num,
-				"time":row[0],
-				"place":row[1]
-			})
-		if len(data) > 0:
-			return render_template('part11.html',part11_active = "active",title="Part 11",data=data)
-		else:
-			return render_template('part11.html',part11_active = "active",title="Part 11")
+	data = []
+	frults = ['apple','pear','berry','grape','kiwi','banana']
+	cnxn = pyodbc.connect('Driver={ODBC Driver 17 for SQL Server};Server=tcp:notminusone.database.windows.net,1433;Database=notminusoneDatabase;Uid=not-1;Pwd={0626Fuyi};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;')
+	cursor = cnxn.cursor()
+	for frult in frults:
+		cursor.execute("select sum(num) from f where food=?",frult)
+		row = cursor.fetchone()
+		data.append(int(row))
+	
+	return render_template('part11.html',part11_active="active",title="Part 11",data=data,frults=frults)
+	# if request.method=='GET':
+	# 	return render_template('part11.html',part11_active = "active",title="Part 11")
+	# if request.method=='POST':
+	# 	low = float(request.form["low"])
+	# 	high = float(request.form["high"])
+	# 	N = int(request.form["N"])
+	# 	cnxn = pyodbc.connect('Driver={ODBC Driver 17 for SQL Server};Server=tcp:notminusone.database.windows.net,1433;Database=notminusoneDatabase;Uid=not-1;Pwd={0626Fuyi};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;')
+	# 	cursor = cnxn.cursor()
+	# 	data = []
+	# 	step = (high-low)/N
+	# 	for i in range(N):
+	# 		cursor.execute("select count(*) from nquakes2 where mag>"+str(low + step * i)+ "and mag<"+ str(low + step * (i + 1)))
+	# 		num = cursor.fetchval()
+	# 		cursor.execute("select max(mag) from nquakes2 where mag>"+str(low + step * i)+ "and mag<"+ str(low + step * (i + 1)))
+	# 		max = cursor.fetchval()
+	# 		cursor.execute("select time,place from nquakes2 where mag=?",max)
+	# 		row = cursor.fetchone()
+	# 		data.append({
+	# 			"num":num,
+	# 			"time":row[0],
+	# 			"place":row[1]
+	# 		})
+	# 	if len(data) > 0:
+	# 		return render_template('part11.html',part11_active = "active",title="Part 11",data=data)
+	# 	else:
+	# 		return render_template('part11.html',part11_active = "active",title="Part 11")
 
 @app.route('/part12',methods=['GET','POST'])
 def part12():
