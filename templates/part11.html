@@ -1,33 +1,57 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-<div
-    style="width: 100%; display: flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;">
-    <svg>
-        {% if data%}
-        {% for i in range(8) %}
-        <!-- <h3>store{{i+1}}</h3> -->
-        <rect x="0" y={{i*30}} height="25"   width={{data[i]*20}} fill="blue" ></rect>
-        {% endfor %}
-       
-        {% endif %}
-    </svg>
-
-    <!-- {% if data %}
-    <table class="table table-striped table-bordered table-hover table-condensed" style="width: 60%; margin:auto">
-        <tr>
-            <th>Num</th>
-            <th>time</th>
-            <th>place</th>
-        </tr>
-        {% for pic in data %}
-        <tr>
-            <td>{{ pic.num}}</td>
-            <td>{{ pic.time }}</td>
-            <td>{{ pic.place }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    {% endif %} -->
+<div style="display: flex; flex-direction: column; justify-content: center; align-items: center;margin-top: 50px;">
+    {% if not data %}
+    <form action="" method="post" class="form" role="form"
+        style="display: flex; flex-direction:row; width: 60%; margin-bottom: 40px;">
+        <input class="form-control" id="Low2" name="Low" placeholder="Input the start store" type="number"
+            value="" style="margin-right: 20px;">
+        <input class="form-control" id="High" name="High" placeholder="Input the end store" type="number"
+            value="" style="margin-right: 20px;">
+        <input class="btn btn-primary" id="submit" name="submit" type="submit" value="Search">
+    </form>
+    {% endif %}
+    {% if data %}
+        <div id="bar" style="height: 500px; width: 80%"></div>
+        <div id="data" container="{{data}}" style="display:none"></div>
+    {% endif %}
+    {% if information %}
+        <span>{{information}}</span>
+    {% endif %}
 </div>
+<script type="text/javascript">
+    var myChart = echarts.init(document.getElementById('bar'));
+	var data = document.getElementById('data').getAttribute('container');//绑定以获取data值
+	dataJson=JSON.parse(data);
+    // setting chart
+    var option = {
+        title: {
+            text: 'The total amount of food for each store',
+            textStyle: {fontSize:25},
+            left:"center"
+        },
+        tooltip: {},
+        xAxis: {
+            name: 'amount',
+            nameTextStyle:{fontWeight:"bold",fontSize:12},
+            axisLine:{show:true,symbol:['none', 'arrow'],symbolOffset:[0,12]},
+            axisTick:{inside:true,}
+        },
+        yAxis: {
+            name:'store',
+            nameTextStyle:{fontWeight:"bold",fontSize:12},
+            data: dataJson.name,
+            axisLine:{show:true,symbol:['none', 'arrow'],symbolOffset:[0,12]}
+        },
+        series: [{
+            type: 'bar',
+            data: dataJson.count
+        }]
+        
+    };
+
+    // show chart
+    myChart.setOption(option);
+</script>
 {% endblock %}

@@ -28,88 +28,93 @@ driver= '{ODBC Driver 17 for SQL Server}'
 # ROUTES!
 
 
-@app.route('/')
+@app.route('/',methods=["GET","POST"])
 def part10():
-	data = []
-	data2 = []
-	frults = ['apple','pear','berry','grape','kiwi','banana']
-	cnxn = pyodbc.connect('Driver={ODBC Driver 17 for SQL Server};Server=tcp:notminusone.database.windows.net,1433;Database=notminusoneDatabase;Uid=not-1;Pwd={0626Fuyi};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;')
-	cursor = cnxn.cursor()
-	for frult in frults:
-		cursor.execute("select sum(num) from f where food=?",frult)
-		row = cursor.fetchval()
-		data.append(int(row))
-	
-	for i in range(1,9):
-		cursor.execute("select sum(num) from f where store=?",i)
-		row = cursor.fetchval()
-		data2.append(int(row))
-		
-	return render_template('part10.html',part10_active="active",title="Part 10",data=data,frults=frults,data2=data2)
+	if request.method=='GET':
+		return render_template('part10.html',part10_active="active",title="Part 10")
+	if request.method=='POST':
+		low=int(request.form["Low"])
+		high=int(request.form["High"])
+		if(low>high):
+			a=low
+			low=high
+			high=a
+		if low>0 and high>0:
+			cnxn = pyodbc.connect('Driver={ODBC Driver 17 for SQL Server};Server=tcp:notminusone.database.windows.net,1433;Database=notminusoneDatabase;Uid=not-1;Pwd={0626Fuyi};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;')
+			cursor = cnxn.cursor()
+			a = cursor.fetchall()
+			count=[]
+			name=[]
+			for item in a:
+				count.append(item[0])
+				name.append(item[1])
+			dic={}
+			dic['count']=count
+			dic['name']=name
+			dataJson=json.dumps(dic,ensure_ascii=False)
+			return render_template('part10.html',part10_active="active",title="Part 10",data = dataJson)
+		else:
+			return render_template('part10.html',part10_active="active",title="Part 10",information="Your input is wrong!")
 	
 
 @app.route('/part11',methods=['GET','POST'])
 def part11():
-	data = []
-	cnxn = pyodbc.connect('Driver={ODBC Driver 17 for SQL Server};Server=tcp:notminusone.database.windows.net,1433;Database=notminusoneDatabase;Uid=not-1;Pwd={0626Fuyi};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;')
-	cursor = cnxn.cursor()
-	for i in range(1,9):
-		cursor.execute("select sum(num) from f where store=?",i)
-		row = cursor.fetchval()
-		data.append(int(row))
-	
-	return render_template('part11.html',part11_active="active",title="Part 11",data=data)
-	# if request.method=='GET':
-	# 	return render_template('part11.html',part11_active = "active",title="Part 11")
-	# if request.method=='POST':
-	# 	low = float(request.form["low"])
-	# 	high = float(request.form["high"])
-	# 	N = int(request.form["N"])
-	# 	cnxn = pyodbc.connect('Driver={ODBC Driver 17 for SQL Server};Server=tcp:notminusone.database.windows.net,1433;Database=notminusoneDatabase;Uid=not-1;Pwd={0626Fuyi};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;')
-	# 	cursor = cnxn.cursor()
-	# 	data = []
-	# 	step = (high-low)/N
-	# 	for i in range(N):
-	# 		cursor.execute("select count(*) from nquakes2 where mag>"+str(low + step * i)+ "and mag<"+ str(low + step * (i + 1)))
-	# 		num = cursor.fetchval()
-	# 		cursor.execute("select max(mag) from nquakes2 where mag>"+str(low + step * i)+ "and mag<"+ str(low + step * (i + 1)))
-	# 		max = cursor.fetchval()
-	# 		cursor.execute("select time,place from nquakes2 where mag=?",max)
-	# 		row = cursor.fetchone()
-	# 		data.append({
-	# 			"num":num,
-	# 			"time":row[0],
-	# 			"place":row[1]
-	# 		})
-	# 	if len(data) > 0:
-	# 		return render_template('part11.html',part11_active = "active",title="Part 11",data=data)
-	# 	else:
-	# 		return render_template('part11.html',part11_active = "active",title="Part 11")
+	if request.method=='GET':
+		return render_template('part11.html',part11_active = "active",title="Part 11")
+	if request.method=='POST':
+		low=int(request.form["Low"])
+		high=int(request.form["High"])
+		if(low>high):
+			a=low
+			low=high
+			high=a
+		if low>0 and high>0:
+			cnxn = pyodbc.connect('Driver={ODBC Driver 17 for SQL Server};Server=tcp:notminusone.database.windows.net,1433;Database=notminusoneDatabase;Uid=not-1;Pwd={0626Fuyi};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;')
+			cursor = cnxn.cursor()
+			cursor.execute("select sum(num),store from f where store>=? and store<=? group by store ",low,high)
+			a = cursor.fetchall()
+			count=[]
+			name=[]
+			for item in a:
+				count.append(item[0])
+				name.append(item[1])
+			dic={}
+			dic['count']=count
+			dic['name']=name
+			dataJson=json.dumps(dic,ensure_ascii=False)
+			return render_template('part11.html',part11_active = "active",title="Part 11",data = dataJson)
+		else:
+			return render_template('part11.html',part11_active = "active",title="Part 11",information="Your input is wrong!")
+
 
 @app.route('/part12',methods=['GET','POST'])
 def part12():
 	if request.method=='GET':
 		return render_template('part12.html',part12_active = "active",title="Part 12")
 	if request.method=='POST':
-		latitude1 = float(request.form["latitude1"])
-		latitude2 = float(request.form["latitude2"])
-		low_latitude = min(latitude1,latitude2)
-		high_latitude = max(latitude1,latitude2)
-	
-		longitude1 = float(request.form["longitude1"])
-		longitude2 = float(request.form["longitude2"])
-		low_longitude = min(longitude1,longitude2)
-		high_longitude = max(longitude1,longitude2)
-		cnxn = pyodbc.connect('Driver={ODBC Driver 17 for SQL Server};Server=tcp:notminusone.database.windows.net,1433;Database=notminusoneDatabase;Uid=not-1;Pwd={0626Fuyi};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;')
-		cursor = cnxn.cursor()
-		# cursor.execute("select id,latitude,longitude,net,place from nquakes2 where latitude=?",latitude," and longitude=?",longitude)
-		cursor.execute("select id,latitude,longitude,net,place from nquakes2 where latitude between "+str(low_latitude)+" and "+str(high_latitude)+
-		" and longitude between "+str(low_longitude)+" and "+str(high_longitude))
-		row = cursor.fetchall()
-		if row is not None:
-			return render_template('part12.html',part12_active = "active",data =row)
+		low=int(request.form["Low"])
+		high=int(request.form["High"])
+		if(low>high):
+			a=low
+			low=high
+			high=a
+		if low>0 and high>0:
+			cnxn = pyodbc.connect('Driver={ODBC Driver 17 for SQL Server};Server=tcp:notminusone.database.windows.net,1433;Database=notminusoneDatabase;Uid=not-1;Pwd={0626Fuyi};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;')
+			cursor = cnxn.cursor()
+			cursor.execute("select sum(num),store from f where store>=? and store<=? group by store ",low,high)
+			a = cursor.fetchall()
+			count=[]
+			name=[]
+			for item in a:
+				count.append(item[0])
+				name.append(item[1])
+			dic={}
+			dic['count']=count
+			dic['name']=name
+			dataJson=json.dumps(dic,ensure_ascii=False)
+			return render_template('part12.html',part12_active = "active",title="Part 12",data = dataJson)
 		else:
-			return render_template('part12.html',part12_active = "active",title="Part 12",information="no data be searched")
+			return render_template('part12.html',part12_active = "active",title="Part 12",information="Your input is wrong!")
 
 @app.route('/part14',methods=['GET','POST'])
 def part14():
@@ -141,17 +146,33 @@ def part14():
 @app.route('/part13',methods=['GET','POST'])
 def part13():
 	if request.method=='GET':
-		return render_template('part13.html',part13_active = "active",title="Part 13")
-	if request.method=='POST':
-		net = request.form["net"]
 		cnxn = pyodbc.connect('Driver={ODBC Driver 17 for SQL Server};Server=tcp:notminusone.database.windows.net,1433;Database=notminusoneDatabase;Uid=not-1;Pwd={0626Fuyi};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;')
 		cursor = cnxn.cursor()
-		cursor.execute("select top(6)* from nquakes2 where net=? order by time desc ",net)
-		data = cursor.fetchall()
-		if len(data) > 0:
-			return render_template('part13.html',part13_active = "active",title="Part 13",data=data)
-		else:
-			return render_template('part13.html',part13_active = "active",title="Part 13")
+		cursor.execute("select x,y,color from p where color='r'")
+		a = cursor.fetchall()
+		count=[]
+		color=[]
+		for item in a:
+			count.append(list(item[0:2]))
+			color.append(item[2])
+		dic={}
+		dic['count']=count
+		dic['color']=color
+		dataJson=json.dumps(dic,ensure_ascii=False)
+		cursor.execute("select x,y,color from p where color='g'")
+		a1 = cursor.fetchall()
+		count1=[]
+		color1=[]
+		for item in a1:
+			count1.append(list(item[0:2]))
+			color1.append(item[2])
+		dic1={}
+		dic1['count']=count1
+		dic1['color']=color1
+		dataJson1=json.dumps(dic1,ensure_ascii=False)
+		return render_template('part13.html',part13_active = "active",title="Part 13",data = dataJson,data1 = dataJson1)		
+
+	
 		
 		# if id =="":
 		# 	cursor.execute("select top(6)* from nquakes2 where net=? order by time desc ",net)
