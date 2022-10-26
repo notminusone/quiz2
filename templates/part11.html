@@ -5,7 +5,7 @@
     style="width: 100%; display: flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;">
     <svg>
         {% if data%}
-        {% for i in data %}
+        {% for i in range(6) %}
         <rect x="0" y={{i*30}} height="25"  width={{data[i]*20}} color="blue" >11</rect>
         {% endfor %}
         <!-- <rect x="0" y="0"  width="120" height="25"/>
